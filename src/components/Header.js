@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex, Button, Image, Text, Spacer } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -18,10 +19,14 @@ function Header() {
         Uteam
       </Text>
       <Spacer />
-      <Button colorScheme="blue">Login</Button>
-      <Button colorScheme="blue" mr="2vw" ml="2vw">
-        Register
-      </Button>
+      <Link to="/">
+        <Button colorScheme="blue">Login</Button>
+      </Link>
+      <Link to="/register">
+        <Button colorScheme="blue" mr="2vw" ml="2vw">
+          Register
+        </Button>
+      </Link>
     </Flex>
   );
 }
