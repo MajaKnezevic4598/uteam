@@ -6,6 +6,7 @@ const theme = extendTheme({
     darkWhite: "#F8F8F8",
   },
   fonts: {
+    heading: "Mononoki",
     body: "Mononoki",
   },
 });
