@@ -14,8 +14,7 @@ import {
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import validator from "validator";
-
-import { usePasswordValidation } from "../hooks/usePasswordValidation";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -43,10 +42,6 @@ function Login() {
       setEmailError("Enter valid email");
     }
   };
-
-  //using validation from custom usePasswordValidation Hook
-
-  const [validLength, upperCase] = usePasswordValidation({ password });
 
   return (
     <Flex width="full" align="center" justifyContent="center" mt="8vh">
@@ -99,17 +94,14 @@ function Login() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-              {validLength && upperCase ? (
-                <Text fontSize="2vh" color="blue.400" mt="1vh">
-                  Correct password format
-                </Text>
-              ) : (
-                <Text fontSize="2vh" mt="2vh">
-                  Password needs to be at least 6 characters long and with one
-                  upperCase character
-                </Text>
-              )}
             </FormControl>
+            <Link to="/register">
+              <Button
+                variant="link"
+                mt="4vh"
+                mb="2vh"
+              >{`Don\t have an account?`}</Button>
+            </Link>
             <Button type="submit" variant="solid" width="full" mt={4}>
               Sign In
             </Button>

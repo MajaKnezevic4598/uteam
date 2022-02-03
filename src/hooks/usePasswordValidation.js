@@ -5,7 +5,6 @@ export const usePasswordValidation = ({ password = "" }) => {
   const [upperCase, setUpperCase] = useState(null);
 
   useEffect(() => {
-    console.log("from usePasswordValidation");
     setValidLength(password.length >= 6 ? true : false);
     setUpperCase(password.toLocaleLowerCase() !== password);
   }, [password]);
