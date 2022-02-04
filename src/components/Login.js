@@ -15,6 +15,7 @@ import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import validator from "validator";
 import { Link } from "react-router-dom";
+import { authUser } from "../services/authUser";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -22,13 +23,15 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("jello");
     console.log(email, password);
     setEmail("");
     setPassword("");
     setEmailError("");
+    await authUser(email, password);
+    console.log("next line");
   };
 
   const handlePasswordVisibility = () => {

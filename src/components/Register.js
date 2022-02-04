@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { registerUser } from "../services/registerUser";
 
 function Register() {
   const {
@@ -29,8 +30,11 @@ function Register() {
     setShowPassword(!showPassword);
   };
 
-  const handleRegister = (data) => {
+  const handleRegister = async (data) => {
     console.log(data);
+    const responseFromRegister = await registerUser(data);
+    console.log("user from Register");
+    console.log(responseFromRegister);
   };
 
   return (
