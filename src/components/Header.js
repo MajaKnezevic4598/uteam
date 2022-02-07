@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Flex, Button, Image, Text, Spacer } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Header() {
+  const { isLoggedIn, logOut } = useContext(AuthContext);
   return (
     <Flex
       w="100vw"
@@ -19,11 +21,23 @@ function Header() {
         Uteam
       </Text>
       <Spacer />
+      <p>{`${isLoggedIn}`}</p>
       <Link to="/">
-        <Button colorScheme="blue">Login</Button>
+        {isLoggedIn ? (
+          <Button colorScheme="teal" onClick={logOut}>
+            Loggout
+          </Button>
+        ) : (
+          <Button colorScheme="blue">Login</Button>
+        )}
       </Link>
       <Link to="/register">
-        <Button colorScheme="blue" mr="2vw" ml="2vw">
+        <Button
+          colorScheme="blue"
+          mr="2vw"
+          ml="2vw"
+          disabled={isLoggedIn ? true : false}
+        >
           Register
         </Button>
       </Link>

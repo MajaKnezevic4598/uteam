@@ -8,6 +8,7 @@ export const authUser = async (email, password) => {
     });
     console.log(response);
     console.log("Authentification succssful!");
+    return response;
   } catch (error) {
     console.log(error.message);
   }
