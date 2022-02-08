@@ -19,7 +19,7 @@ import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { registerUser } from "../services/registerUser";
 import { AuthContext } from "../context/AuthContext";
 
-//practical functionality for register component would be to unable to register a user while you are logged in
+//useful functionality for register component would be to unable to register a user while you are logged in
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();

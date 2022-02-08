@@ -8,7 +8,7 @@ function Header() {
   return (
     <Flex
       w="100vw"
-      h={["auto", "auto", "10vh"]}
+      h={["auto", "20vh", "10vh"]}
       bgColor="gray.100"
       color="litherBlack"
       direction={["column", "row", "row"]}
@@ -16,7 +16,14 @@ function Header() {
       bgGradient="linear(to-r,gray.500, white)"
       boxShadow="lg"
     >
-      <Image src="../assets/flower-logo.png" h="20vh" mt="4vh" ml="2vw" />
+      <Image
+        src="../assets/flower-logo.png"
+        h="20vh"
+        mt="4vh"
+        ml="2vw"
+        position="relative"
+        zIndex="3"
+      />
       <Text fontSize="4vh" fontWeight="bold" letterSpacing="0.1vw">
         Uteam
       </Text>
