@@ -18,6 +18,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { registerUser } from "../services/registerUser";
 import { AuthContext } from "../context/AuthContext";
+import { company } from "../services/company";
+import { authUser } from "../services/authUser";
 
 //useful functionality for register component would be to unable to register a user while you are logged in
 function Register() {
@@ -46,6 +48,11 @@ function Register() {
       setIsLoading(false);
       setIsLoggedIn(true);
       setJwt(responseFromRegister.data.jwt);
+      await authUser(data.email, data.password);
+      await company(
+        responseFromRegister.data.user.username,
+        responseFromRegister.data.jwt
+      );
       navigate("/sidebar");
     }
     console.log("registraccija uspesna");
