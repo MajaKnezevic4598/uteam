@@ -9,31 +9,42 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  CircularProgress,
 } from "@chakra-ui/react";
 
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import validator from "validator";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { authUser } from "../services/authUser";
+import { AuthContext } from "../context/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
+  const { setIsLoggedIn, setJwt } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
+  //isLoading is using for chakra ui spiner button
+
+  const navigate = useNavigate();
+  const local = window.localStorage.getItem("jwt");
+  if (local !== null) window.localStorage.removeItem("jwt");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("jello");
-    console.log(email, password);
-    setEmail("");
-    setPassword("");
-    setEmailError("");
-    await authUser(email, password);
-    console.log("next line");
+    setIsLoading(true);
+    const response = await authUser(email, password);
+    if (response.status === 200) {
+      setIsLoading(false);
+      console.log(response.data.jwt);
+      setIsLoggedIn(true);
+      setJwt(response.data.jwt);
+      navigate("/sidebar");
+    }
   };
-
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -54,7 +65,7 @@ function Login() {
         </Box>
         <Box my={4} textAlign="left">
           <form onSubmit={handleSubmit}>
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Email</FormLabel>
               <InputGroup>
                 <Input
@@ -74,7 +85,7 @@ function Login() {
                 {emailError}
               </Text>
             </FormControl>
-            <FormControl mt={6}>
+            <FormControl mt={6} isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
                 <Input
@@ -106,7 +117,11 @@ function Login() {
               >{`Don\t have an account?`}</Button>
             </Link>
             <Button type="submit" variant="solid" width="full" mt={4}>
-              Sign In
+              {isLoading ? (
+                <CircularProgress isIndeterminate size="24px" color="teal" />
+              ) : (
+                "Sign In"
+              )}
             </Button>
           </form>
         </Box>

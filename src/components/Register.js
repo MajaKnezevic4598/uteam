@@ -9,15 +9,21 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  CircularProgress,
 } from "@chakra-ui/react";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { registerUser } from "../services/registerUser";
+import { AuthContext } from "../context/AuthContext";
 
+//useful functionality for register component would be to unable to register a user while you are logged in
 function Register() {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { setIsLoggedIn, setJwt } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -32,9 +38,17 @@ function Register() {
 
   const handleRegister = async (data) => {
     console.log(data);
+    setIsLoading(true);
     const responseFromRegister = await registerUser(data);
     console.log("user from Register");
     console.log(responseFromRegister);
+    if (responseFromRegister.status === 200) {
+      setIsLoading(false);
+      setIsLoggedIn(true);
+      setJwt(responseFromRegister.data.jwt);
+      navigate("/sidebar");
+    }
+    console.log("registraccija uspesna");
   };
 
   return (
@@ -45,7 +59,7 @@ function Register() {
         </Box>
         <Box my={4} textAlign="left">
           <form onSubmit={handleSubmit(handleRegister)}>
-            <FormControl mb="2vh">
+            <FormControl mb="2vh" isRequired>
               <FormLabel>Name:</FormLabel>
               <Input
                 type="text"
@@ -67,7 +81,7 @@ function Register() {
                 </Text>
               )}
             </FormControl>
-            <FormControl mb="2vh">
+            <FormControl mb="2vh" isRequired>
               <FormLabel>Email:</FormLabel>
               <InputGroup>
                 <Input
@@ -94,7 +108,7 @@ function Register() {
                 </Text>
               )}
             </FormControl>
-            <FormControl mb="2vh">
+            <FormControl mb="2vh" isRequired>
               <FormLabel>Password:</FormLabel>
               <InputGroup>
                 <Input
@@ -152,7 +166,11 @@ function Register() {
               </Button>
             </Link>
             <Button type="submit" variant="solid" width="full" mt={4}>
-              Register
+              {isLoading ? (
+                <CircularProgress isIndeterminate size="24px" color="teal" />
+              ) : (
+                "Register"
+              )}
             </Button>
           </form>
         </Box>
