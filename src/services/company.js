@@ -2,7 +2,7 @@ import axiosInstance from "./http";
 
 export const company = async (company, token) => {
   try {
-    const response = await axiosInstance.post("api/companies", {
+    const response = await axiosInstance.post("companies", {
       data: {
         name: company,
       },

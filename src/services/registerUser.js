@@ -4,7 +4,7 @@ import axiosInstance from "./http";
 
 export const registerUser = async (data) => {
   try {
-    const response = await axiosInstance.post("api/auth/local/register", {
+    const response = await axiosInstance.post("auth/local/register", {
       username: data.username,
       email: data.email,
       password: data.password,

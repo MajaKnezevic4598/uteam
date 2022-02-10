@@ -20,12 +20,14 @@ import { registerUser } from "../services/registerUser";
 import { AuthContext } from "../context/AuthContext";
 import { company } from "../services/company";
 import { authUser } from "../services/authUser";
+import { uploadFile } from "../services/uploadFile";
 
 //useful functionality for register component would be to unable to register a user while you are logged in
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { setIsLoggedIn, setJwt } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -41,6 +43,10 @@ function Register() {
   const handleRegister = async (data) => {
     console.log(data);
     setIsLoading(true);
+    console.log(data.profileImage[0]);
+    const formData = new FormData();
+    formData.append("files", data.profileImage[0]);
+    console.log(formData.get("files"));
     const responseFromRegister = await registerUser(data);
     console.log("user from Register");
     console.log(responseFromRegister);
@@ -53,6 +59,7 @@ function Register() {
         responseFromRegister.data.user.username,
         responseFromRegister.data.jwt
       );
+      await uploadFile(formData);
       navigate("/sidebar");
     }
     console.log("registraccija uspesna");
