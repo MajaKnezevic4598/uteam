@@ -1,13 +1,10 @@
 import axiosInstance from "./http";
 
-export const company = async (company, token) => {
+export const company = async (company) => {
   try {
     const response = await axiosInstance.post("companies", {
       data: {
         name: company,
-      },
-      headers: {
-        Authorization: `Bearer ${token}`,
       },
     });
     console.log(response);

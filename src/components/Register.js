@@ -16,17 +16,16 @@ import { useForm } from "react-hook-form";
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { registerUser } from "../services/registerUser";
+
 import { AuthContext } from "../context/AuthContext";
-import { company } from "../services/company";
+
 import { authUser } from "../services/authUser";
-import { uploadFile } from "../services/uploadFile";
 
 //useful functionality for register component would be to unable to register a user while you are logged in
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { setIsLoggedIn, setJwt } = useContext(AuthContext);
+  const { setIsLoggedIn, setJwt, handleUserRegister } = useContext(AuthContext);
 
   const {
     register,
@@ -41,30 +40,25 @@ function Register() {
   };
 
   const handleRegister = async (data) => {
-    console.log(data);
     setIsLoading(true);
-    console.log(data.profileImage[0]);
     const formData = new FormData();
     formData.append("files", data.profileImage[0]);
-    console.log(formData.get("files"));
-    const responseFromRegister = await registerUser(data);
-    console.log("user from Register");
-    console.log(responseFromRegister);
-    if (responseFromRegister.status === 200) {
-      setIsLoading(false);
-      setIsLoggedIn(true);
-      setJwt(responseFromRegister.data.jwt);
-      await authUser(data.email, data.password);
-      await company(
-        responseFromRegister.data.user.username,
-        responseFromRegister.data.jwt
-      );
-      await uploadFile(formData);
-      navigate("/sidebar");
-    }
-    console.log("registraccija uspesna");
-  };
+    const rs = await handleUserRegister(formData, data);
+    console.log(rs);
+    setIsLoading(false);
 
+    //   if (responseFromRegister.status === 200) {
+    //     setIsLoading(false);
+    //     setIsLoggedIn(true);
+    //     setJwt(responseFromRegister.data.jwt);
+    //     await authUser(data.email, data.password);
+    //     await company(data.company, responseFromRegister.data.jwt);
+    //     await uploadFile(formData);
+    //     navigate("/sidebar");
+    //   }
+    //   console.log("registraccija uspesna");
+    // };
+  };
   return (
     <Flex width="full" align="center" justifyContent="center" mt="4vh">
       <Box p={6} width="35vw" borderWidth={1} borderRadius={8} boxShadow="lg">
@@ -122,6 +116,28 @@ function Register() {
                 </Text>
               )}
             </FormControl>
+
+            <FormControl mb="2vh" isRequired>
+              <FormLabel>Company:</FormLabel>
+
+              <Input
+                type="text"
+                placeholder="Company"
+                {...register("company", {
+                  required: "company is required",
+                })}
+                onKeyUp={() => {
+                  trigger("company");
+                }}
+              />
+
+              {errors.company && (
+                <Text fontSize="2vh" mt="1vh" color="red.400">
+                  {errors.company.message}
+                </Text>
+              )}
+            </FormControl>
+
             <FormControl mb="2vh" isRequired>
               <FormLabel>Password:</FormLabel>
               <InputGroup>

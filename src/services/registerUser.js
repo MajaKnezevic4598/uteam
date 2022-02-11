@@ -9,8 +9,8 @@ export const registerUser = async (data) => {
       email: data.email,
       password: data.password,
     });
-    console.log(`{response User: ${JSON.stringify(response.data.user)}}`);
-    console.log(`{response Token: ${response.data.jwt}}`);
+    // console.log(`{response User: ${JSON.stringify(response.data.user)}}`);
+    // console.log(`{response Token: ${response.data.jwt}}`);
     return response;
   } catch (error) {
     console.log(error.message);
