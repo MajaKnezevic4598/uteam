@@ -3,6 +3,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import SideBar from "./components/SideBar";
 import { AuthContextProvider } from "./context/AuthContext";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -15,7 +16,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/sidebar/*" element={<SideBar />} />
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/sidebar/*" element={<SideBar />} />
+            </Route>
           </Routes>
         </AuthContextProvider>
       </BrowserRouter>
