@@ -2,6 +2,7 @@ import React, { useState, createContext, useEffect } from "react";
 import { registerUser } from "../services/registerUser";
 import { uploadFile } from "../services/uploadFile";
 import { company } from "../services/company";
+import { createProfile } from "../services/createProfile";
 
 export const AuthContext = createContext();
 
@@ -27,6 +28,13 @@ export const AuthContextProvider = ({ children }) => {
       console.log("response from companyRes", companyRes);
       console.log("response from photoRes", photoRes);
       setJwt(registerRes.data.jwt);
+      const responseFromCreateProfile = await createProfile(
+        registerRes.data.user.id,
+        companyRes.data.data.id,
+        photoRes.data[0].id,
+        registerRes.data.user.username
+      );
+      console.log(responseFromCreateProfile);
       return true;
     } catch (error) {
       console.log(error.message);

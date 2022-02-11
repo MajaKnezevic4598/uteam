@@ -19,13 +19,13 @@ import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 import { AuthContext } from "../context/AuthContext";
 
-import { authUser } from "../services/authUser";
+// import { authUser } from "../services/authUser";
 
 //useful functionality for register component would be to unable to register a user while you are logged in
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { setIsLoggedIn, setJwt, handleUserRegister } = useContext(AuthContext);
+  const { handleUserRegister } = useContext(AuthContext);
 
   const {
     register,
@@ -43,21 +43,14 @@ function Register() {
     setIsLoading(true);
     const formData = new FormData();
     formData.append("files", data.profileImage[0]);
-    const rs = await handleUserRegister(formData, data);
-    console.log(rs);
-    setIsLoading(false);
-
-    //   if (responseFromRegister.status === 200) {
-    //     setIsLoading(false);
-    //     setIsLoggedIn(true);
-    //     setJwt(responseFromRegister.data.jwt);
-    //     await authUser(data.email, data.password);
-    //     await company(data.company, responseFromRegister.data.jwt);
-    //     await uploadFile(formData);
-    //     navigate("/sidebar");
-    //   }
-    //   console.log("registraccija uspesna");
-    // };
+    const response = await handleUserRegister(formData, data);
+    if (response) {
+      setIsLoading(false);
+      navigate("/sidebar");
+    } else {
+      setIsLoading(false);
+      navigate("/register");
+    }
   };
   return (
     <Flex width="full" align="center" justifyContent="center" mt="4vh">
