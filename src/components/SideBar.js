@@ -5,6 +5,7 @@ import Questions from "./Questions";
 import Team from "./Team";
 import MyProfile from "./MyProfile";
 import CompanyInfo from "./CompanyInfo";
+import PendingForApproval from "./PendingForApproval";
 import { Flex, Box } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
 
@@ -13,6 +14,7 @@ function SideBar() {
   const toggle = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <Flex direction={["column", "column", "row"]}>
       <Box
@@ -25,7 +27,7 @@ function SideBar() {
         boxShadow="8px 0px 5px 0px rgba(0,0,0,0.3)"
       >
         <MenuToggle toggle={toggle} isOpen={isOpen} />
-        <MenuItem to={"/"} isOpen={isOpen}>
+        <MenuItem to={"pending"} isOpen={isOpen}>
           Pending for approval
         </MenuItem>
         <MenuItem to={"team"} isOpen={isOpen}>
@@ -43,6 +45,7 @@ function SideBar() {
       </Box>
 
       <Routes>
+        <Route path="pending" element={<PendingForApproval />} />
         <Route path="questions" element={<Questions />} />
         <Route path="team" element={<Team />} />
         <Route path="my-profile" element={<MyProfile />} />

@@ -42,13 +42,17 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(jwt);
-    if (jwt !== null) {
-      console.log("sada sam razlicit on null");
-      window.localStorage.setItem("jwt", jwt);
-    }
-  }, [jwt]);
+  useEffect(
+    () => {
+      console.log(jwt);
+      if (jwt !== null) {
+        console.log("sada sam razlicit on null");
+        window.localStorage.setItem("jwt", jwt);
+      }
+    },
+    [jwt],
+    []
+  );
 
   return (
     <AuthContext.Provider

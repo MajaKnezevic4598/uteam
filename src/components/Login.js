@@ -25,17 +25,19 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
-  const { setIsLoggedIn, setJwt } = useContext(AuthContext);
+  const { setIsLoggedIn, setJwt, jwt } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   //isLoading is using for chakra ui spiner button
 
   const navigate = useNavigate();
   const local = window.localStorage.getItem("jwt");
-  if (local !== null) window.localStorage.removeItem("jwt");
+  if (local !== null) window.localStorage.setItem("jwt", local);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log("from register");
+    console.log(jwt);
     const response = await authUser(email, password);
     if (response.status === 200) {
       setIsLoading(false);
