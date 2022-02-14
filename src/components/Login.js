@@ -19,6 +19,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { authUser } from "../services/authUser";
 import { AuthContext } from "../context/AuthContext";
+import { UserContext } from "../context/UserContex";
+import { user, getUser } from "../services/user";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -26,6 +28,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
   const { setIsLoggedIn, setJwt, jwt } = useContext(AuthContext);
+  const { setCurrentUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   //isLoading is using for chakra ui spiner button
 
@@ -41,9 +44,19 @@ function Login() {
     const response = await authUser(email, password);
     if (response.status === 200) {
       setIsLoading(false);
-      console.log(response.data.jwt);
-      setIsLoggedIn(true);
       setJwt(response.data.jwt);
+      setIsLoggedIn(true);
+
+      const responseUser = await user();
+      const responseFromGetUser = await getUser(responseUser.data.id);
+      console.log(responseFromGetUser);
+      console.log("***************************************************");
+      setCurrentUser({
+        name: responseFromGetUser.data.data[0].attributes.name,
+        profilePhoto:
+          responseFromGetUser.data.data[0].attributes.profilePhoto.data
+            .attributes.url,
+      });
       navigate("/sidebar");
     }
   };

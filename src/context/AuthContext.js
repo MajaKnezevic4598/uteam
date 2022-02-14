@@ -1,18 +1,21 @@
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext, useEffect, useContext } from "react";
 import { registerUser } from "../services/registerUser";
 import { uploadFile } from "../services/uploadFile";
 import { company } from "../services/company";
 import { createProfile } from "../services/createProfile";
+import { UserContext } from "../context/UserContex";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [jwt, setJwt] = useState(null);
+  const { setCurrentUser } = useContext(UserContext);
 
   const logOut = () => {
     setIsLoggedIn(false);
     console.log("You are logged out!!!!");
+    setCurrentUser({ name: "", profilePhoto: "" });
     window.localStorage.removeItem("jwt");
   };
 
