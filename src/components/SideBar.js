@@ -6,6 +6,7 @@ import Team from "./Team";
 import MyProfile from "./MyProfile";
 import CompanyInfo from "./CompanyInfo";
 import PendingForApproval from "./PendingForApproval";
+import AddQuestion from "./AddQuestion";
 import { Flex, Box } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
 
@@ -21,7 +22,7 @@ function SideBar() {
     <Flex direction={["column", "column", "row"]}>
       <Box
         // border="1px solid black"
-        h={["auto", "auto", "90vh"]}
+        h={["auto", "auto", "80vh"]}
         w={["100vw", "100vw", "25vw"]}
         bgGradient="linear(to-t, pink.200, gray.300)"
         pt="6vh"
@@ -49,6 +50,7 @@ function SideBar() {
       <Routes>
         <Route path="pending" element={<PendingForApproval />} />
         <Route path="questions" element={<Questions />} />
+        <Route path="questions/add-questions" element={<AddQuestion />} />
         <Route path="team" element={<Team />} />
         <Route path="my-profile" element={<MyProfile />} />
         <Route path="company-info" element={<CompanyInfo />} />
