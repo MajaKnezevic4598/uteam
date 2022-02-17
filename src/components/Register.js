@@ -27,6 +27,9 @@ function Register() {
   const navigate = useNavigate();
   const { setIsLoggedIn, handleUserRegister } = useContext(AuthContext);
 
+  const localAuth = window.localStorage.getItem("auth");
+  if (localAuth !== null) window.localStorage.setItem("auth", localAuth);
+
   const {
     register,
     handleSubmit,

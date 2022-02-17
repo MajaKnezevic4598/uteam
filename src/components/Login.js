@@ -27,7 +27,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
-  const { setIsLoggedIn, setJwt, jwt } = useContext(AuthContext);
+  const { setIsLoggedIn, setJwt, jwt, setAuthUser } = useContext(AuthContext);
   const { setCurrentUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   //isLoading is using for chakra ui spiner button
@@ -46,6 +46,7 @@ function Login() {
       setIsLoading(false);
       setJwt(response.data.jwt);
       setIsLoggedIn(true);
+      setAuthUser("autorizovan");
 
       const responseUser = await user();
       const responseFromGetUser = await getUser(responseUser.data.id);

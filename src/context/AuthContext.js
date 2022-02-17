@@ -11,6 +11,7 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [jwt, setJwt] = useState(null);
+  const [authUser, setAuthUser] = useState(null);
   const { setCurrentUser } = useContext(UserContext);
 
   const logOut = () => {
@@ -32,6 +33,8 @@ export const AuthContextProvider = ({ children }) => {
       console.log("response from companyRes", companyRes);
       console.log("response from photoRes", photoRes);
       setJwt(registerRes.data.jwt);
+      setAuthUser("registrovan");
+      g;
       const responseFromCreateProfile = await createProfile(
         registerRes.data.user.id,
         companyRes.data.data.id,
@@ -68,6 +71,18 @@ export const AuthContextProvider = ({ children }) => {
     []
   );
 
+  useEffect(
+    () => {
+      console.log(authUser);
+      if (authUser !== null) {
+        console.log("sada sam razlicit on null");
+        window.localStorage.setItem("auth", authUser);
+      }
+    },
+    [authUser],
+    []
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -77,6 +92,7 @@ export const AuthContextProvider = ({ children }) => {
         setJwt,
         jwt,
         handleUserRegister,
+        setAuthUser,
       }}
     >
       {children}
