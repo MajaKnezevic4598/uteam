@@ -18,7 +18,7 @@ export const AuthContextProvider = ({ children }) => {
     setIsLoggedIn(false);
     console.log("You are logged out!!!!");
     setCurrentUser({ name: "", profilePhoto: "" });
-    window.localStorage.removeItem("jwt");
+    window.localStorage.clear();
   };
 
   //we need to put handleRegister to context and move it from Register.js component
@@ -34,7 +34,7 @@ export const AuthContextProvider = ({ children }) => {
       console.log("response from photoRes", photoRes);
       setJwt(registerRes.data.jwt);
       setAuthUser("registrovan");
-      g;
+
       const responseFromCreateProfile = await createProfile(
         registerRes.data.user.id,
         companyRes.data.data.id,

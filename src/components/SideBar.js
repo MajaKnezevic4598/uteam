@@ -14,7 +14,9 @@ function SideBar() {
   const toggle = () => {
     setIsOpen(!isOpen);
   };
-
+  const userFromLocal = window.localStorage.getItem("User");
+  if (userFromLocal !== null)
+    window.localStorage.setItem("User", userFromLocal);
   return (
     <Flex direction={["column", "column", "row"]}>
       <Box

@@ -36,6 +36,10 @@ function Login() {
   const local = window.localStorage.getItem("jwt");
   if (local !== null) window.localStorage.setItem("jwt", local);
 
+  const userFromLocal = window.localStorage.getItem("User");
+  if (userFromLocal !== null)
+    window.localStorage.setItem("User", userFromLocal);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
