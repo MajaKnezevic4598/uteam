@@ -4,6 +4,7 @@ import { uploadFile } from "../services/uploadFile";
 import { company } from "../services/company";
 import { createProfile } from "../services/createProfile";
 import { UserContext } from "../context/UserContex";
+import { user, getUser } from "../services/user";
 
 export const AuthContext = createContext();
 
@@ -38,6 +39,16 @@ export const AuthContextProvider = ({ children }) => {
         registerRes.data.user.username
       );
       console.log(responseFromCreateProfile);
+      const responseUser = await user();
+      const responseFromGetUser = await getUser(responseUser.data.id);
+      console.log(responseFromGetUser);
+      console.log("***************************************************");
+      setCurrentUser({
+        name: responseFromGetUser.data.data[0].attributes.name,
+        profilePhoto:
+          responseFromGetUser.data.data[0].attributes.profilePhoto.data
+            .attributes.url,
+      });
       return true;
     } catch (error) {
       console.log(error.message);
