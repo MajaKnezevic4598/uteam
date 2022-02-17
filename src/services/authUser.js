@@ -2,7 +2,7 @@ import axiosInstance from "./http";
 
 export const authUser = async (email, password) => {
   try {
-    const response = await axiosInstance.post("api/auth/local", {
+    const response = await axiosInstance.post("auth/local", {
       identifier: email,
       password,
     });

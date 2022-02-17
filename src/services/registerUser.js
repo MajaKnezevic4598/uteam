@@ -4,13 +4,13 @@ import axiosInstance from "./http";
 
 export const registerUser = async (data) => {
   try {
-    const response = await axiosInstance.post("api/auth/local/register", {
+    const response = await axiosInstance.post("auth/local/register", {
       username: data.username,
       email: data.email,
       password: data.password,
     });
-    console.log(`{response User: ${JSON.stringify(response.data.user)}}`);
-    console.log(`{response Token: ${response.data.jwt}}`);
+    // console.log(`{response User: ${JSON.stringify(response.data.user)}}`);
+    // console.log(`{response Token: ${response.data.jwt}}`);
     return response;
   } catch (error) {
     console.log(error.message);
