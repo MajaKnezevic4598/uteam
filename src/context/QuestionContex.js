@@ -1,23 +1,33 @@
 import React, { createContext, useState, useEffect } from "react";
+import { getAllQuestion } from "../services/questions";
 
 export const QuestionContext = createContext();
 
 export const QuestionContextProvider = ({ children }) => {
-  //here we need to generate order
-  //we can save order in local storage
-  //if there is not key with order we can set order to be 1
-  //if there is a key with a value of order we can set order to be value+1
-  //   const [order, setOrder] = useState(() => {
-  //     const localOrder = window.localStorage.getItem("order");
-  //     if (order) return Number(localOrder) + 1;
-  //     return 0;
-  //   });
-
-  const [order, setOrder] = useState(window.localStorage.getItem("order"));
+  const [order, setOrder] = useState(0);
 
   useEffect(() => {
-    window.localStorage.setItem("order", order);
-  }, [order]);
+    const getQ = async () => {
+      try {
+        const response = await getAllQuestion();
+        console.log(response);
+        if (response.data.data.length === 0) {
+          console.log("nema podataka u nizu");
+          return;
+        } else {
+          const orders = response.data.data.map(
+            (item) => item.attributes.order
+          );
+          setOrder(Math.max(...orders));
+        }
+        return response;
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getQ();
+  }, []);
+
   return (
     <QuestionContext.Provider value={{ order, setOrder }}>
       {children}

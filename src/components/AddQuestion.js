@@ -17,17 +17,15 @@ function AddQuestion() {
     quText: "",
     typeOfQuestion: "",
   });
-
   const { order, setOrder } = useContext(QuestionContext);
-  console.log(order, "order in kontexta");
-  const o = order ? order : 0;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("form submited");
     console.log(question);
     const { quText, typeOfQuestion } = question;
-    await postQuestion(quText, typeOfQuestion, o);
-    setOrder(o + 1);
+    await postQuestion(quText, typeOfQuestion, order + 1);
+    setOrder(order + 1);
   };
 
   const handleChange = (e) => {
@@ -48,6 +46,7 @@ function AddQuestion() {
     >
       <Heading fontSize="3vh" mb="6vh">
         Add new question
+        {order}
       </Heading>
       <form onSubmit={handleSubmit}>
         <Input

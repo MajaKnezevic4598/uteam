@@ -15,3 +15,13 @@ export const postQuestion = async (text, type, order) => {
     console.log(error.message);
   }
 };
+
+export const getAllQuestion = async () => {
+  try {
+    const response = await axiosInstance.get("questions");
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
