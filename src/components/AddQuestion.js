@@ -17,15 +17,17 @@ function AddQuestion() {
     quText: "",
     typeOfQuestion: "",
   });
-  const { order, setOrder } = useContext(QuestionContext);
+  const { order, setOrder, setQuestionList } = useContext(QuestionContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("form submited");
     console.log(question);
     const { quText, typeOfQuestion } = question;
-    await postQuestion(quText, typeOfQuestion, order + 1);
+    const response = await postQuestion(quText, typeOfQuestion, order + 1);
     setOrder(order + 1);
+    setQuestion({ quText: "", typeOfQuestion: "" });
+    if (response.status === 200) setQuestionList((prev) => [...prev, quText]);
   };
 
   const handleChange = (e) => {

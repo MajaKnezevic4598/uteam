@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Flex, Text, Button, Spacer, Box } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import { QuestionContext } from "../context/QuestionContex";
+import SingleQuestion from "./SingleQuestion";
 
 function Questions() {
+  const { questionList } = useContext(QuestionContext);
   return (
     <Flex border="1px solid black" p={6} width="full" direction="column">
       <Flex align="center" border="1px solid blue" h="10vh" width="60vw">
@@ -20,7 +23,15 @@ function Questions() {
           </Button>
         </Link>
       </Flex>
-      <Box>Here we need to show questions that are alredy defined</Box>
+      <Box>
+        Here we need to show questions that are alredy defined
+        {questionList ? (
+          <SingleQuestion>ima pitanja</SingleQuestion>
+        ) : (
+          <Box>Nema pitanja</Box>
+        )}
+        {/* make an component and pass questionList as props */}
+      </Box>
     </Flex>
   );
 }
