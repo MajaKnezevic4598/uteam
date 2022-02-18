@@ -6,6 +6,7 @@ import UserInfo from "./components/UserInfo";
 import { AuthContextProvider } from "./context/AuthContext";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import { UserContextProvider } from "./context/UserContex";
+import { QuestionContextProvider } from "./context/QuestionContex";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -15,15 +16,17 @@ function App() {
       <BrowserRouter>
         <UserContextProvider>
           <AuthContextProvider>
-            <Header />
-            <UserInfo />
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route element={<ProtectedRoutes />}>
-                <Route path="/sidebar/*" element={<SideBar />} />
-              </Route>
-            </Routes>
+            <QuestionContextProvider>
+              <Header />
+              <UserInfo />
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route element={<ProtectedRoutes />}>
+                  <Route path="/sidebar/*" element={<SideBar />} />
+                </Route>
+              </Routes>
+            </QuestionContextProvider>
           </AuthContextProvider>
         </UserContextProvider>
       </BrowserRouter>

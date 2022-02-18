@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { QuestionContext } from "../context/QuestionContex";
 import {
   Box,
   Heading,
@@ -9,16 +10,24 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
+import { postQuestion } from "../services/questions";
+
 function AddQuestion() {
   const [question, setQuestion] = useState({
     quText: "",
     typeOfQuestion: "",
   });
 
-  const handleSubmit = (e) => {
+  const { order, setOrder } = useContext(QuestionContext);
+  console.log(order, "order in kontexta");
+  const o = order ? order : 0;
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("form submited");
     console.log(question);
+    const { quText, typeOfQuestion } = question;
+    await postQuestion(quText, typeOfQuestion, o);
+    setOrder(o + 1);
   };
 
   const handleChange = (e) => {
