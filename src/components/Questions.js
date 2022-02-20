@@ -8,9 +8,17 @@ import SingleQuestion from "./SingleQuestion";
 function Questions() {
   const { questionList } = useContext(QuestionContext);
   return (
-    <Flex border="1px solid black" p={6} width="full" direction="column">
+    <Flex
+      border="1px solid black"
+      p={6}
+      width="full"
+      direction="column"
+      align="center"
+    >
       <Flex align="center" border="1px solid blue" h="10vh" width="60vw">
-        <Text ml="2vw">Questions</Text>
+        <Text ml="2vw" fontWeight="bold" fontSize="3vh">
+          Questions
+        </Text>
         <Spacer />
         <Link to="add-questions">
           <Button
@@ -24,11 +32,12 @@ function Questions() {
         </Link>
       </Flex>
       <Box>
-        Here we need to show questions that are alredy defined
-        {questionList ? (
+        {questionList.length ? (
           <SingleQuestion>ima pitanja</SingleQuestion>
         ) : (
-          <Box>Nema pitanja</Box>
+          <Box mt="4vh" fontWeight="bold" fontSize="xl">
+            Define questions
+          </Box>
         )}
         {/* make an component and pass questionList as props */}
       </Box>

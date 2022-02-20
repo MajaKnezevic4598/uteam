@@ -25,6 +25,7 @@ function AddQuestion() {
     console.log(question);
     const { quText, typeOfQuestion } = question;
     const response = await postQuestion(quText, typeOfQuestion, order + 1);
+    console.log(response);
     setOrder(order + 1);
     setQuestion({ quText: "", typeOfQuestion: "" });
     if (response.status === 200) setQuestionList((prev) => [...prev, quText]);
@@ -46,7 +47,7 @@ function AddQuestion() {
       borderRadius="8px"
       boxShadow="dark-lg"
     >
-      <Heading fontSize="3vh" mb="6vh">
+      <Heading fontSize="3vh" mb="6vh" fontWeight="bold">
         Add new question
         {order}
       </Heading>

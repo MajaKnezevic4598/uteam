@@ -25,3 +25,13 @@ export const getAllQuestion = async () => {
     console.log(error.message);
   }
 };
+
+export const deleteQuestions = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`questions/${id}`);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error.message);
+  }
+};

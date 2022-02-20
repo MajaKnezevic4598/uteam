@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const list = [
+        {
+          id: 1,
+          attributes: {
+            text: "ar",
+            type: "long_text",
+            order: 2,
+            createdAt: "2022",
+          },
+        },
+        {
+          id: 2,
+          attributes: {
+            text: "b",
+            type: "long_text",
+            order: 2,
+            createdAt: "2022",
+          },
+        },
+        {
+          id: 3,
+          attributes: {
+            text: "cr",
+            type: "long_text",
+            order: 2,
+            createdAt: "2022",
+          },
+        },
+      ];
+
+      const newArr = list.filter((item) => item.id !== 3);
+      console.log(newArr);
+    </script>
+  </body>
+</html>
