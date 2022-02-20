@@ -54,6 +54,9 @@ function SingleQuestion() {
                         setForEditing({
                           id: item.id,
                           order: item.attributes.order,
+                          listNumber: index + 1,
+                          oldQuestion: item.attributes.text,
+                          oldType: item.attributes.type,
                         });
                       }}
                     >

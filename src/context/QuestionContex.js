@@ -55,8 +55,12 @@ export const QuestionContextProvider = ({ children }) => {
     });
   };
 
-  const handleUpdate = (id, text, type, order) => {
-    updateQuestion(id, text, type, order);
+  const handleUpdate = async (id, text, type, order) => {
+    const response = await updateQuestion(id, text, type, order);
+    //here we need to upadate also a context
+    setQuestionList((prev) => {
+      return [...prev.filter((item) => item.id !== id), response.data.data];
+    });
   };
 
   return (
