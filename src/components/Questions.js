@@ -15,7 +15,7 @@ function Questions() {
       direction="column"
       align="center"
     >
-      <Flex align="center" border="1px solid blue" h="10vh" width="60vw">
+      <Flex align="center" h="10vh" width="60vw">
         <Text ml="2vw" fontWeight="bold" fontSize="3vh">
           Questions
         </Text>

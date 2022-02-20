@@ -22,19 +22,26 @@ function SingleQuestion() {
     }
   };
   return (
-    <Flex w="60vw" h="auto" p={6} border="1px solid gray">
+    <Flex
+      w="60vw"
+      h="auto"
+      p={6}
+      border="1px solid gray"
+      borderRadius="8px"
+      mt="4vh"
+    >
       {questionList.length !== 0 && (
-        <Box border="1px solid blue">
+        <Box>
           {" "}
           {questionList.map((item, index) => {
             console.log(item);
             return (
               <Flex
-                border="1px solid red"
                 key={index}
-                mb="2vh"
+                mb="3.5vh"
                 w="55vw"
                 align="center"
+                borderBottom="1px solid gray"
               >
                 <Box>
                   <Flex fontSize="1.8vh" mb="1.8vh">
