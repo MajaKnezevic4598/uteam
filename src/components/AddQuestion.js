@@ -28,7 +28,12 @@ function AddQuestion() {
     console.log(response);
     setOrder(order + 1);
     setQuestion({ quText: "", typeOfQuestion: "" });
-    if (response.status === 200) setQuestionList((prev) => [...prev, quText]);
+    if (response.status === 200) {
+      setQuestionList((prev) => [...prev, response.data.data]);
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const handleChange = (e) => {
@@ -51,6 +56,7 @@ function AddQuestion() {
         Add new question
         {order}
       </Heading>
+
       <form onSubmit={handleSubmit}>
         <Input
           type="text"

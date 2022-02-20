@@ -1,17 +1,33 @@
 import React, { useContext } from "react";
 import { Flex, Box, Text, Button, Spacer } from "@chakra-ui/react";
 import { QuestionContext } from "../context/QuestionContex";
+import { Link } from "react-router-dom";
 
 function SingleQuestion() {
-  const { questionList, handleDelete } = useContext(QuestionContext);
+  const { questionList, handleDelete, setForEditing } =
+    useContext(QuestionContext);
   console.log("iz singleQuestiona item");
   console.log(questionList);
+
+  const styleText = (str) => {
+    switch (str) {
+      case "long_text":
+        return "Long text";
+      case "text":
+        return "Text";
+      case "image":
+        return "Image";
+      default:
+        return "";
+    }
+  };
   return (
     <Flex w="60vw" h="auto" p={6} border="1px solid gray">
       {questionList.length !== 0 && (
         <Box border="1px solid blue">
           {" "}
           {questionList.map((item, index) => {
+            console.log(item);
             return (
               <Flex
                 border="1px solid red"
@@ -22,16 +38,28 @@ function SingleQuestion() {
               >
                 <Box>
                   <Flex fontSize="1.8vh" mb="1.8vh">
-                    <Text mr="2vw">Question 1 </Text>
-                    <Text>Text</Text>
+                    <Text mr="2vw">Question {index + 1} </Text>
+                    <Text>{styleText(item.attributes.type)}</Text>
                   </Flex>
                   <Text fontWeight="700">{item.attributes.text}</Text>
                 </Box>
                 <Spacer />
                 <Box>
-                  <Button colorScheme="teal" variant="outline" size="sm">
-                    Edit
-                  </Button>
+                  <Link to="edit-question">
+                    <Button
+                      colorScheme="teal"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setForEditing({
+                          id: item.id,
+                          order: item.attributes.order,
+                        });
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  </Link>
                   <Button
                     colorScheme="teal"
                     variant="outline"

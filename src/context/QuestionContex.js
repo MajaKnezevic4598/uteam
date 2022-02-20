@@ -1,18 +1,23 @@
 import React, { createContext, useState, useEffect } from "react";
-import { getAllQuestion, deleteQuestions } from "../services/questions";
+import {
+  getAllQuestion,
+  deleteQuestions,
+  updateQuestion,
+} from "../services/questions";
 
 export const QuestionContext = createContext();
 
 export const QuestionContextProvider = ({ children }) => {
   const [order, setOrder] = useState(0);
   const [questionList, setQuestionList] = useState([]);
+  const [forEditing, setForEditing] = useState({});
+  //here we can save data about question information about editing
 
   useEffect(
     () => {
       const getQ = async () => {
         try {
           const response = await getAllQuestion();
-          console.log(response);
           if (response.data.data.length === 0) {
             console.log("nema podataka u nizu");
             return;
@@ -21,7 +26,6 @@ export const QuestionContextProvider = ({ children }) => {
               (item) => item.attributes.order
             );
             const questions = response.data.data;
-            console.log(questions);
             setOrder(Math.max(...orders));
             setQuestionList((prev) => [...prev, ...questions]);
             //here in the first render we set contex to contain questions from strapi
@@ -37,6 +41,11 @@ export const QuestionContextProvider = ({ children }) => {
     [questionList]
   );
 
+  useEffect(() => {
+    console.log("question object for edditing");
+    console.log(forEditing);
+  }, [forEditing]);
+
   const handleDelete = (id) => {
     deleteQuestions(id);
     setQuestionList((prev) => {
@@ -46,9 +55,22 @@ export const QuestionContextProvider = ({ children }) => {
     });
   };
 
+  const handleUpdate = (id, text, type, order) => {
+    updateQuestion(id, text, type, order);
+  };
+
   return (
     <QuestionContext.Provider
-      value={{ order, setOrder, questionList, setQuestionList, handleDelete }}
+      value={{
+        order,
+        setOrder,
+        questionList,
+        setQuestionList,
+        handleDelete,
+        handleUpdate,
+        forEditing,
+        setForEditing,
+      }}
     >
       {children}
     </QuestionContext.Provider>

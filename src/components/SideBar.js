@@ -9,6 +9,7 @@ import PendingForApproval from "./PendingForApproval";
 import AddQuestion from "./AddQuestion";
 import { Flex, Box } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
+import EditQuestion from "./EditQuestion";
 
 function SideBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,6 +52,7 @@ function SideBar() {
         <Route path="pending" element={<PendingForApproval />} />
         <Route path="questions" element={<Questions />} />
         <Route path="questions/add-questions" element={<AddQuestion />} />
+        <Route path="questions/edit-question" element={<EditQuestion />} />
         <Route path="team" element={<Team />} />
         <Route path="my-profile" element={<MyProfile />} />
         <Route path="company-info" element={<CompanyInfo />} />

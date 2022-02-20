@@ -35,3 +35,20 @@ export const deleteQuestions = async (id) => {
     console.log(error.message);
   }
 };
+
+export const updateQuestion = async (id, text, type, order) => {
+  try {
+    const response = await axiosInstance.put(`questions/${id}`, {
+      data: {
+        text,
+        type,
+        order,
+      },
+    });
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
