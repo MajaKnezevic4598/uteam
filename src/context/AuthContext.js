@@ -17,7 +17,7 @@ export const AuthContextProvider = ({ children }) => {
   const logOut = () => {
     setIsLoggedIn(false);
     console.log("You are logged out!!!!");
-    setCurrentUser({ name: "", profilePhoto: "" });
+    setCurrentUser({ name: "", profilePhoto: "", email: "" });
     window.localStorage.clear();
   };
 
@@ -51,6 +51,7 @@ export const AuthContextProvider = ({ children }) => {
         profilePhoto:
           responseFromGetUser.data.data[0].attributes.profilePhoto.data
             .attributes.url,
+        email: responseUser.data.email,
       });
       return true;
     } catch (error) {

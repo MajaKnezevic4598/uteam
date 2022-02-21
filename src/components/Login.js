@@ -53,6 +53,9 @@ function Login() {
       setAuthUser("autorizovan");
 
       const responseUser = await user();
+
+      console.log(responseUser);
+      console.log("//////////////////////////////////////////////////");
       const responseFromGetUser = await getUser(responseUser.data.id);
       console.log(responseFromGetUser);
       console.log("***************************************************");
@@ -61,6 +64,7 @@ function Login() {
         profilePhoto:
           responseFromGetUser.data.data[0].attributes.profilePhoto.data
             .attributes.url,
+        email: responseUser.data.email,
       });
       navigate("/sidebar");
     }
