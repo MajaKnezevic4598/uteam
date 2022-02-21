@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/UserContex";
 import { AuthContext } from "../context/AuthContext";
+import { editProfile } from "../services/createProfile";
 import {
   Box,
   Flex,
@@ -22,9 +23,11 @@ function MyProfile() {
   const [currPassword, setCurrPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [borderStyle, setBorderStyle] = useState(false);
+  const [selectedFile, setSelectedFile] = useState();
+  const [newName, setNewName] = useState("");
 
-  const { currentUser } = useContext(UserContext);
-  const { handlePasswordChange } = useContext(AuthContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { handlePasswordChange, imageChange } = useContext(AuthContext);
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -34,31 +37,68 @@ function MyProfile() {
     e.preventDefault();
     await handlePasswordChange(currentUser.email, currPassword, newPassword);
   };
+
+  const changeHandlerer = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const handleImageChange = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("files", selectedFile);
+    const responseFromUpload = await imageChange(formData);
+    console.log(responseFromUpload.data[0].id);
+    console.log(currentUser.userId);
+    console.log(newName);
+    const editRes = await editProfile(
+      currentUser.profileId,
+      responseFromUpload.data[0].id,
+      newName
+    );
+    console.log(editRes);
+    setCurrentUser({
+      ...currentUser,
+      name: editRes.data.data.attributes.name,
+      profilePhoto: responseFromUpload.data[0].url,
+    });
+
+    console.log("u slici sam");
+  };
   return (
-    <Box mx="auto" mt="5vh" border="1px solid black" width="60vw">
+    <Box mx="auto" mt="5vh" width="70vw">
       <Heading fontSize="3vh" textAlign="center">
         My Profile
       </Heading>
       <Flex justify="space-around">
         <Box mt="4vh" border="1px solid gray" borderRadius="8px" p={6} w="25vw">
-          <form>
+          <form onSubmit={handleImageChange}>
             <Text borderBottom="1px solid black" mb="4vh" fontWeight="bold">
               {" "}
               Basic Info
             </Text>
-            <Text>Name:</Text>
-            <Box
-              p={2}
-              border="1px solid gray"
-              borderRadius="8px"
-              color="gray.400"
-              mb="3vh"
-            >
-              {currentUser.name}
-            </Box>
+            <FormControl>
+              <FormLabel htmlFor="name">Enter new name:</FormLabel>
+              <Input
+                placeholder={currentUser.name}
+                type="text"
+                id="name"
+                value={newName}
+                onChange={(e) => {
+                  setNewName(e.target.value);
+                }}
+              />
+            </FormControl>
+
             <FormControl mb="4vh">
               <FormLabel htmlFor="file">Profile Photo:</FormLabel>
-              <Input id="file" type="file" />
+              <Input
+                id="file"
+                type="file"
+                name="profileImg"
+                accept=".png, .jpg, .jpeg"
+                variant="unstyled"
+                onChange={changeHandlerer}
+              />
             </FormControl>
             <Flex justify="flex-end">
               <Button type="submit">Save</Button>
@@ -73,7 +113,10 @@ function MyProfile() {
               Security
             </Text>
             <Text>Email:</Text>
-            <Text mb="3vh"> {currentUser.email}</Text>
+            <Text mb="3vh" fontWeight="bold" color="teal">
+              {" "}
+              {currentUser.email}
+            </Text>
             <FormControl mb="4vh">
               <FormLabel htmlFor="curPassword">Current Password:</FormLabel>
               {/* <Input id="currPassword" type="password" /> */}

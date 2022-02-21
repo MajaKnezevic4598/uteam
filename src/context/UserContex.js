@@ -11,7 +11,7 @@ export const UserContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(() => {
     if (window.localStorage.getItem("User"))
       return JSON.parse(window.localStorage.getItem("User"));
-    return { name: "", profilePhoto: "", email: "" };
+    return { name: "", profilePhoto: "", email: "", userId: "", profileId: "" };
   });
   useEffect(
     () => {

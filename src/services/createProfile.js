@@ -15,3 +15,17 @@ export const createProfile = async (userId, companyId, photoId, name) => {
     throw `Profile creation failed - ${error}`;
   }
 };
+
+export const editProfile = async (profileId, photoId, name) => {
+  try {
+    const response = await axiosInstance.put(`/profiles/${profileId}`, {
+      data: {
+        profilePhoto: photoId,
+        name: name,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(`Changing profile failed - ${error.message}`);
+  }
+};

@@ -19,7 +19,13 @@ export const AuthContextProvider = ({ children }) => {
   const logOut = () => {
     setIsLoggedIn(false);
     console.log("You are logged out!!!!");
-    setCurrentUser({ name: "", profilePhoto: "", email: "" });
+    setCurrentUser({
+      name: "",
+      profilePhoto: "",
+      email: "",
+      userId: "",
+      profileId: "",
+    });
     window.localStorage.clear();
   };
 
@@ -54,6 +60,8 @@ export const AuthContextProvider = ({ children }) => {
           responseFromGetUser.data.data[0].attributes.profilePhoto.data
             .attributes.url,
         email: responseUser.data.email,
+        userId: responseUser.data.id,
+        profileId: responseFromCreateProfile.data.data.id,
       });
       return true;
     } catch (error) {
@@ -77,6 +85,16 @@ export const AuthContextProvider = ({ children }) => {
         authenticatedUser = await authUser(email, newPassword);
         setJwt(authenticatedUser.data.jwt);
       }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const imageChange = async (data) => {
+    try {
+      const response = await uploadFile(data);
+      console.log(response);
+      return response;
     } catch (error) {
       console.log(error.message);
     }
@@ -117,6 +135,7 @@ export const AuthContextProvider = ({ children }) => {
         handleUserRegister,
         setAuthUser,
         handlePasswordChange,
+        imageChange,
       }}
     >
       {children}

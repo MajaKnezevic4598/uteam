@@ -65,6 +65,8 @@ function Login() {
           responseFromGetUser.data.data[0].attributes.profilePhoto.data
             .attributes.url,
         email: responseUser.data.email,
+        userId: responseUser.data.id,
+        profileId: responseFromGetUser.data.data[0].id,
       });
       navigate("/sidebar");
     }
