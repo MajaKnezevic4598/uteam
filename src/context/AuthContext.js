@@ -5,13 +5,15 @@ import { company } from "../services/company";
 import { createProfile } from "../services/createProfile";
 import { UserContext } from "../context/UserContex";
 import { user, getUser } from "../services/user";
+import { authUser } from "../services/authUser";
+import { passwordChange } from "../services/password";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [jwt, setJwt] = useState(null);
-  const [authUser, setAuthUser] = useState(null);
+  const [authU, setAuthUser] = useState(null);
   const { setCurrentUser } = useContext(UserContext);
 
   const logOut = () => {
@@ -46,7 +48,7 @@ export const AuthContextProvider = ({ children }) => {
       const responseFromGetUser = await getUser(responseUser.data.id);
       console.log(responseFromGetUser);
       console.log("***************************************************");
-      setCurrentUser({
+      await setCurrentUser({
         name: responseFromGetUser.data.data[0].attributes.name,
         profilePhoto:
           responseFromGetUser.data.data[0].attributes.profilePhoto.data
@@ -57,6 +59,26 @@ export const AuthContextProvider = ({ children }) => {
     } catch (error) {
       console.log(error.message);
       return false;
+    }
+  };
+
+  const handlePasswordChange = async (email, oldPassword, newPassword) => {
+    try {
+      let authenticatedUser = await authUser(email, oldPassword);
+      console.log("odgovor iz autentifikacije************************");
+      console.log(authenticatedUser);
+      if (authenticatedUser.status === 200) {
+        console.log("dobar password ");
+        const res = await passwordChange(
+          authenticatedUser.data.user.id,
+          newPassword
+        );
+        console.log(res);
+        authenticatedUser = await authUser(email, newPassword);
+        setJwt(authenticatedUser.data.jwt);
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -74,13 +96,13 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(
     () => {
-      console.log(authUser);
-      if (authUser !== null) {
+      console.log(authU);
+      if (authU !== null) {
         console.log("sada sam razlicit on null");
-        window.localStorage.setItem("auth", authUser);
+        window.localStorage.setItem("auth", authU);
       }
     },
-    [authUser],
+    [authU],
     []
   );
 
@@ -94,6 +116,7 @@ export const AuthContextProvider = ({ children }) => {
         jwt,
         handleUserRegister,
         setAuthUser,
+        handlePasswordChange,
       }}
     >
       {children}

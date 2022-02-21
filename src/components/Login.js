@@ -59,7 +59,7 @@ function Login() {
       const responseFromGetUser = await getUser(responseUser.data.id);
       console.log(responseFromGetUser);
       console.log("***************************************************");
-      setCurrentUser({
+      await setCurrentUser({
         name: responseFromGetUser.data.data[0].attributes.name,
         profilePhoto:
           responseFromGetUser.data.data[0].attributes.profilePhoto.data
