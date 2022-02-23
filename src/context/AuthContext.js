@@ -2,7 +2,7 @@ import React, { useState, createContext, useEffect, useContext } from "react";
 import { registerUser } from "../services/registerUser";
 import { uploadFile } from "../services/uploadFile";
 import { company } from "../services/company";
-import { createProfile } from "../services/createProfile";
+import { createProfile } from "../services/Profile";
 import { UserContext } from "../context/UserContex";
 import { user, getUser } from "../services/user";
 import { authUser } from "../services/authUser";
@@ -25,6 +25,7 @@ export const AuthContextProvider = ({ children }) => {
       email: "",
       userId: "",
       profileId: "",
+      companyId: "",
     });
     window.localStorage.clear();
   };
@@ -51,6 +52,10 @@ export const AuthContextProvider = ({ children }) => {
       );
       console.log(responseFromCreateProfile);
       const responseUser = await user();
+      console.log(responseUser);
+      console.log(
+        "**************responseuser***********************************************"
+      );
       const responseFromGetUser = await getUser(responseUser.data.id);
       console.log(responseFromGetUser);
       console.log("***************************************************");
@@ -62,6 +67,7 @@ export const AuthContextProvider = ({ children }) => {
         email: responseUser.data.email,
         userId: responseUser.data.id,
         profileId: responseFromCreateProfile.data.data.id,
+        companyId: companyRes.data.data.id,
       });
       return true;
     } catch (error) {

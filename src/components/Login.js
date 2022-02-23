@@ -21,6 +21,7 @@ import { authUser } from "../services/authUser";
 import { AuthContext } from "../context/AuthContext";
 import { UserContext } from "../context/UserContex";
 import { user, getUser } from "../services/user";
+import { getCompanyId } from "../services/company";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -58,7 +59,9 @@ function Login() {
       console.log("//////////////////////////////////////////////////");
       const responseFromGetUser = await getUser(responseUser.data.id);
       console.log(responseFromGetUser);
-      console.log("***************************************************");
+
+      const comp = await getCompanyId(responseUser.data.id);
+
       await setCurrentUser({
         name: responseFromGetUser.data.data[0].attributes.name,
         profilePhoto:
@@ -67,6 +70,7 @@ function Login() {
         email: responseUser.data.email,
         userId: responseUser.data.id,
         profileId: responseFromGetUser.data.data[0].id,
+        companyId: comp.data.data[0].attributes.company.data.id,
       });
       navigate("/sidebar");
     }

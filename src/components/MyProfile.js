@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/UserContex";
 import { AuthContext } from "../context/AuthContext";
-import { editProfile } from "../services/createProfile";
+import { editProfile } from "../services/Profile";
 import {
   Box,
   Flex,

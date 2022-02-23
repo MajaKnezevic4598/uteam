@@ -1,12 +1,13 @@
 import axiosInstance from "./http";
 
-export const postQuestion = async (text, type, order) => {
+export const postQuestion = async (text, type, order, companyId) => {
   try {
     const response = await axiosInstance.post("questions", {
       data: {
         text,
         type,
         order,
+        company: companyId,
       },
     });
     console.log(response);
@@ -16,9 +17,11 @@ export const postQuestion = async (text, type, order) => {
   }
 };
 
-export const getAllQuestion = async () => {
+export const getAllQuestion = async (companyId) => {
   try {
-    const response = await axiosInstance.get("questions");
+    const response = await axiosInstance.get(
+      `questions?filters[company][id][$eq]=${companyId}&populate=company`
+    );
     console.log(response);
     return response;
   } catch (error) {

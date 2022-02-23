@@ -1,9 +1,10 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import {
   getAllQuestion,
   deleteQuestions,
   updateQuestion,
 } from "../services/questions";
+import { UserContext } from "../context/UserContex";
 
 export const QuestionContext = createContext();
 
@@ -12,12 +13,13 @@ export const QuestionContextProvider = ({ children }) => {
   const [questionList, setQuestionList] = useState([]);
   const [forEditing, setForEditing] = useState({});
   //here we can save data about question information about editing
+  const { currentUser } = useContext(UserContext);
 
   useEffect(
     () => {
       const getQ = async () => {
         try {
-          const response = await getAllQuestion();
+          const response = await getAllQuestion(currentUser.companyId);
           if (response.data.data.length === 0) {
             console.log("nema podataka u nizu");
             return;
