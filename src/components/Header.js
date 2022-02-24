@@ -6,7 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 function Header() {
   const { isLoggedIn, logOut } = useContext(AuthContext);
   const authUser = window.localStorage.getItem("jwt");
-  console.log(authUser);
+  // console.log(authUser);
   return (
     <Flex
       w="100vw"

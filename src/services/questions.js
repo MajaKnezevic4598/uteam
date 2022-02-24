@@ -20,7 +20,7 @@ export const postQuestion = async (text, type, order, companyId) => {
 export const getAllQuestion = async (companyId) => {
   try {
     const response = await axiosInstance.get(
-      `questions?filters[company][id][$eq]=${companyId}&populate=company`
+      `questions?filters[company][id][$eq]=${companyId}`
     );
     console.log(response);
     return response;
@@ -50,6 +50,15 @@ export const updateQuestion = async (id, text, type, order) => {
     });
 
     console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const getQuestionsFromAllUsers = async () => {
+  try {
+    const response = await axiosInstance.get("questions");
     return response;
   } catch (error) {
     console.log(error.message);

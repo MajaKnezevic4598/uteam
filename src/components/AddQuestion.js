@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { QuestionContext } from "../context/QuestionContex";
+import { UserContext } from "../context/UserContex";
 import {
   Box,
   Heading,
@@ -18,13 +19,20 @@ function AddQuestion() {
     typeOfQuestion: "",
   });
   const { order, setOrder, setQuestionList } = useContext(QuestionContext);
+  const { currentUser } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("form submited");
     console.log(question);
     const { quText, typeOfQuestion } = question;
-    const response = await postQuestion(quText, typeOfQuestion, order + 1);
+    const response = await postQuestion(
+      quText,
+      typeOfQuestion,
+      order + 1,
+      currentUser.companyId
+    );
+    //we neeed to addd company Id in the poooosssst request
     console.log(response);
     setOrder(order + 1);
     setQuestion({ quText: "", typeOfQuestion: "" });

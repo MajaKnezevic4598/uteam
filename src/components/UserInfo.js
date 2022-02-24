@@ -4,9 +4,10 @@ import { Image, Flex, Text, Box } from "@chakra-ui/react";
 
 function UserInfo() {
   const { currentUser } = useContext(UserContext);
-  useEffect(() => {
-    console.log(currentUser);
-  });
+
+  // useEffect(() => {
+  //   console.log(currentUser);
+  // });
 
   return (
     <Box

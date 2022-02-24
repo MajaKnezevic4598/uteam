@@ -19,7 +19,7 @@ export const getCompanyId = async (userId) => {
     const response = await axiosInstance.get(
       `profiles?filters[user][id][$eq]=${userId}&populate=company`
     );
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error.message);

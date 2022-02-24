@@ -1,10 +1,10 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState } from "react";
 import {
   getAllQuestion,
   deleteQuestions,
   updateQuestion,
+  getQuestionsFromAllUsers,
 } from "../services/questions";
-import { UserContext } from "../context/UserContex";
 
 export const QuestionContext = createContext();
 
@@ -12,41 +12,32 @@ export const QuestionContextProvider = ({ children }) => {
   const [order, setOrder] = useState(0);
   const [questionList, setQuestionList] = useState([]);
   const [forEditing, setForEditing] = useState({});
-  //here we can save data about question information about editing
-  const { currentUser } = useContext(UserContext);
+  const handleGetQuestions = async (id) => {
+    try {
+      const response = await getAllQuestion(id);
+      const questions = response.data.data;
+      setQuestionList((prev) => [...prev, ...questions]);
+      return response;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
-  useEffect(
-    () => {
-      const getQ = async () => {
-        try {
-          const response = await getAllQuestion(currentUser.companyId);
-          if (response.data.data.length === 0) {
-            console.log("nema podataka u nizu");
-            return;
-          } else {
-            const orders = response.data.data.map(
-              (item) => item.attributes.order
-            );
-            const questions = response.data.data;
-            setOrder(Math.max(...orders));
-            setQuestionList((prev) => [...prev, ...questions]);
-            //here in the first render we set contex to contain questions from strapi
-          }
-          return response;
-        } catch (error) {
-          console.log(error.message);
-        }
-      };
-      getQ();
-    },
-    [],
-    [questionList]
-  );
-
-  useEffect(() => {
-    console.log("question object for edditing");
-    console.log(forEditing);
-  }, [forEditing]);
+  const handleGetAllQuestions = async () => {
+    try {
+      const response = await getQuestionsFromAllUsers();
+      if (response.data.data.length === 0) {
+        setOrder(0);
+        return;
+      } else {
+        const orders = response.data.data.map((item) => item.attributes.order);
+        setOrder(Math.max(...orders));
+      }
+      return response;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   const handleDelete = (id) => {
     deleteQuestions(id);
@@ -76,6 +67,8 @@ export const QuestionContextProvider = ({ children }) => {
         handleUpdate,
         forEditing,
         setForEditing,
+        handleGetQuestions,
+        handleGetAllQuestions,
       }}
     >
       {children}

@@ -15,8 +15,8 @@ function App() {
     <div>
       <BrowserRouter>
         <UserContextProvider>
-          <AuthContextProvider>
-            <QuestionContextProvider>
+          <QuestionContextProvider>
+            <AuthContextProvider>
               <Header />
               <UserInfo />
               <Routes>
@@ -26,8 +26,8 @@ function App() {
                   <Route path="/sidebar/*" element={<SideBar />} />
                 </Route>
               </Routes>
-            </QuestionContextProvider>
-          </AuthContextProvider>
+            </AuthContextProvider>
+          </QuestionContextProvider>
         </UserContextProvider>
       </BrowserRouter>
     </div>

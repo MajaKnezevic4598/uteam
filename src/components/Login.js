@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import validator from "validator";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -22,16 +22,19 @@ import { AuthContext } from "../context/AuthContext";
 import { UserContext } from "../context/UserContex";
 import { user, getUser } from "../services/user";
 import { getCompanyId } from "../services/company";
+import { QuestionContext } from "../context/QuestionContex";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
-  const { setIsLoggedIn, setJwt, jwt, setAuthUser } = useContext(AuthContext);
-  const { setCurrentUser } = useContext(UserContext);
+  const { setIsLoggedIn, setJwt, setAuthUser } = useContext(AuthContext);
+  const { setCurrentUser, currentUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   //isLoading is using for chakra ui spiner button
+  const { handleGetQuestions, handleGetAllQuestions } =
+    useContext(QuestionContext);
 
   const navigate = useNavigate();
   const local = window.localStorage.getItem("jwt");
@@ -44,8 +47,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log("from register");
-    console.log(jwt);
     const response = await authUser(email, password);
     if (response.status === 200) {
       setIsLoading(false);
@@ -55,10 +56,7 @@ function Login() {
 
       const responseUser = await user();
 
-      console.log(responseUser);
-      console.log("//////////////////////////////////////////////////");
       const responseFromGetUser = await getUser(responseUser.data.id);
-      console.log(responseFromGetUser);
 
       const comp = await getCompanyId(responseUser.data.id);
 
@@ -86,6 +84,14 @@ function Login() {
       setEmailError("Enter valid email");
     }
   };
+
+  useEffect(async () => {
+    if (currentUser.name) {
+      await handleGetAllQuestions();
+      await handleGetQuestions(currentUser.companyId);
+      console.log("user postavljen");
+    }
+  }, [currentUser]);
 
   return (
     <Flex width="full" align="center" justifyContent="center" mt="8vh">

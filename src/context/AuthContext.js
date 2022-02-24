@@ -7,6 +7,7 @@ import { UserContext } from "../context/UserContex";
 import { user, getUser } from "../services/user";
 import { authUser } from "../services/authUser";
 import { passwordChange } from "../services/password";
+import { QuestionContext } from "../context/QuestionContex";
 
 export const AuthContext = createContext();
 
@@ -15,6 +16,7 @@ export const AuthContextProvider = ({ children }) => {
   const [jwt, setJwt] = useState(null);
   const [authU, setAuthUser] = useState(null);
   const { setCurrentUser } = useContext(UserContext);
+  const { setQuestionList } = useContext(QuestionContext);
 
   const logOut = () => {
     setIsLoggedIn(false);
@@ -27,6 +29,7 @@ export const AuthContextProvider = ({ children }) => {
       profileId: "",
       companyId: "",
     });
+    setQuestionList([]);
     window.localStorage.clear();
   };
 
@@ -38,9 +41,6 @@ export const AuthContextProvider = ({ children }) => {
         company(data.company),
         uploadFile(formData),
       ]);
-      console.log("response from registerUser", registerRes);
-      console.log("response from companyRes", companyRes);
-      console.log("response from photoRes", photoRes);
       setJwt(registerRes.data.jwt);
       setAuthUser("registrovan");
 
@@ -50,15 +50,11 @@ export const AuthContextProvider = ({ children }) => {
         photoRes.data[0].id,
         registerRes.data.user.username
       );
-      console.log(responseFromCreateProfile);
+
       const responseUser = await user();
-      console.log(responseUser);
-      console.log(
-        "**************responseuser***********************************************"
-      );
+
       const responseFromGetUser = await getUser(responseUser.data.id);
-      console.log(responseFromGetUser);
-      console.log("***************************************************");
+
       await setCurrentUser({
         name: responseFromGetUser.data.data[0].attributes.name,
         profilePhoto:
@@ -79,15 +75,9 @@ export const AuthContextProvider = ({ children }) => {
   const handlePasswordChange = async (email, oldPassword, newPassword) => {
     try {
       let authenticatedUser = await authUser(email, oldPassword);
-      console.log("odgovor iz autentifikacije************************");
-      console.log(authenticatedUser);
       if (authenticatedUser.status === 200) {
         console.log("dobar password ");
-        const res = await passwordChange(
-          authenticatedUser.data.user.id,
-          newPassword
-        );
-        console.log(res);
+        await passwordChange(authenticatedUser.data.user.id, newPassword);
         authenticatedUser = await authUser(email, newPassword);
         setJwt(authenticatedUser.data.jwt);
       }
@@ -99,7 +89,6 @@ export const AuthContextProvider = ({ children }) => {
   const imageChange = async (data) => {
     try {
       const response = await uploadFile(data);
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error.message);
@@ -110,7 +99,6 @@ export const AuthContextProvider = ({ children }) => {
     () => {
       console.log(jwt);
       if (jwt !== null) {
-        console.log("sada sam razlicit on null");
         window.localStorage.setItem("jwt", jwt);
       }
     },
@@ -120,9 +108,7 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(
     () => {
-      console.log(authU);
       if (authU !== null) {
-        console.log("sada sam razlicit on null");
         window.localStorage.setItem("auth", authU);
       }
     },
