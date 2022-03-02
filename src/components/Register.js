@@ -25,7 +25,10 @@ import { AuthContext } from "../context/AuthContext";
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { handleUserRegister } = useContext(AuthContext);
+  const { setIsLoggedIn, handleUserRegister } = useContext(AuthContext);
+
+  // const localAuth = window.localStorage.getItem("auth");
+  // if (localAuth !== null) window.localStorage.setItem("auth", localAuth);
 
   const {
     register,
@@ -46,11 +49,13 @@ function Register() {
     const response = await handleUserRegister(formData, data);
     if (response) {
       setIsLoading(false);
+      setIsLoggedIn(true);
       navigate("/sidebar");
-    } else {
-      setIsLoading(false);
-      navigate("/register");
     }
+    // } else {
+    //   setIsLoading(false);
+    //   navigate("/register");
+    // }
   };
   return (
     <Flex width="full" align="center" justifyContent="center" mt="4vh">

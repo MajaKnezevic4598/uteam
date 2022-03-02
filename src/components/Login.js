@@ -13,25 +13,36 @@ import {
 } from "@chakra-ui/react";
 
 import { EmailIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import validator from "validator";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { authUser } from "../services/authUser";
 import { AuthContext } from "../context/AuthContext";
+import { UserContext } from "../context/UserContex";
+import { user, getUser } from "../services/user";
+import { getCompanyId } from "../services/company";
+import { QuestionContext } from "../context/QuestionContex";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
-  const { setIsLoggedIn, setJwt } = useContext(AuthContext);
+  const { setIsLoggedIn, setJwt, setAuthUser } = useContext(AuthContext);
+  const { setCurrentUser, currentUser } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   //isLoading is using for chakra ui spiner button
+  const { handleGetQuestions, handleGetAllQuestions } =
+    useContext(QuestionContext);
 
   const navigate = useNavigate();
   const local = window.localStorage.getItem("jwt");
-  if (local !== null) window.localStorage.removeItem("jwt");
+  if (local !== null) window.localStorage.setItem("jwt", local);
+
+  const userFromLocal = window.localStorage.getItem("User");
+  if (userFromLocal !== null)
+    window.localStorage.setItem("User", userFromLocal);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,9 +50,26 @@ function Login() {
     const response = await authUser(email, password);
     if (response.status === 200) {
       setIsLoading(false);
-      console.log(response.data.jwt);
-      setIsLoggedIn(true);
       setJwt(response.data.jwt);
+      setIsLoggedIn(true);
+      setAuthUser("autorizovan");
+
+      const responseUser = await user();
+
+      const responseFromGetUser = await getUser(responseUser.data.id);
+
+      const comp = await getCompanyId(responseUser.data.id);
+
+      await setCurrentUser({
+        name: responseFromGetUser.data.data[0].attributes.name,
+        profilePhoto:
+          responseFromGetUser.data.data[0].attributes.profilePhoto.data
+            .attributes.url,
+        email: responseUser.data.email,
+        userId: responseUser.data.id,
+        profileId: responseFromGetUser.data.data[0].id,
+        companyId: comp.data.data[0].attributes.company.data.id,
+      });
       navigate("/sidebar");
     }
   };
@@ -56,6 +84,14 @@ function Login() {
       setEmailError("Enter valid email");
     }
   };
+
+  useEffect(async () => {
+    if (currentUser.name) {
+      await handleGetAllQuestions();
+      await handleGetQuestions(currentUser.companyId);
+      console.log("user postavljen");
+    }
+  }, [currentUser]);
 
   return (
     <Flex width="full" align="center" justifyContent="center" mt="8vh">

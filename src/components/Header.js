@@ -5,6 +5,8 @@ import { AuthContext } from "../context/AuthContext";
 
 function Header() {
   const { isLoggedIn, logOut } = useContext(AuthContext);
+  const authUser = window.localStorage.getItem("jwt");
+  // console.log(authUser);
   return (
     <Flex
       w="100vw"
@@ -30,7 +32,7 @@ function Header() {
       <Spacer />
       <p>{`${isLoggedIn}`}</p>
       <Link to="/">
-        {isLoggedIn ? (
+        {authUser ? (
           <Button colorScheme="teal" onClick={logOut}>
             Loggout
           </Button>
@@ -43,7 +45,7 @@ function Header() {
           colorScheme="blue"
           mr="2vw"
           ml="2vw"
-          disabled={isLoggedIn ? true : false}
+          disabled={authUser ? true : false}
         >
           Register
         </Button>
